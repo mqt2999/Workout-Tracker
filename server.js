@@ -17,11 +17,17 @@ app.use(express.static("public"));
 const databaseUrl = "workoutTracker";
 const collections = ["workouts"];
 
+const PORT = process.env.PORT || 3001
+
 const db = mongojs(databaseUrl, collections);
 
 db.on("error", error => {
     console.log("Database Error:", error);
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
 mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,
@@ -36,50 +42,7 @@ app.use(require('./routes'));
 
 
 
-// app.get("/", (req, res) => {
-//     res.sendFile(path.join(__dirname + '/public/index.html'))
-// })
 
-// app.get("/exercise", (req,res) => {
-//     res.sendFile(path.join(__dirname + '/public/exercise.html'))
-// })
-// app.get("/stats", (req,res) => {
-//     res.sendFile(path.join(__dirname + '/public/stats.html'))
-// })
-
-// app.get("/api/workouts", (req, res) => {
-//     db.workouts.find({}, (error, data) => {
-//         if (error) {
-//             console.error(error)
-//         }
-//         else {
-//             res.send(data)
-//         }
-//     })
-// })
-
-// app.put('api/workouts/:id', ({body},res) => {
-//     console.log("get the cheese")
-//     db.workouts.findOne({ _id: req.params }).Update( { $push:{ body } }, {new:true})
-//     .then(data => {
-//         res.json(data);
-//     })
-//     .catch(err => {
-//         res.json(err);
-//     })
-// })
-
-// app.post("/api/workouts", (req,res) => {
-//     db.workouts.insert(req.body, (error,data) => {
-//         if (error){
-//             console.error(error)
-//         }
-//         else{
-//             res.send(data)
-//             console.log("get money")
-//         }
-//     })
-// })
-app.listen(3001, () => {
+app.listen(PORT, () => {
     console.log("App running on port 3001!");
 });
