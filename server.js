@@ -25,9 +25,7 @@ db.on("error", error => {
     console.log("Database Error:", error);
 });
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
+
 
 mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,
